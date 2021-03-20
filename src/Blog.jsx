@@ -16,14 +16,19 @@ function Blog() {
   const [state, updateState] = useState({
     loading: true,
     posts: [],
-    // users: []
+    users: []
   });
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
       .then((json) => updateState({posts: json, loading: false}));
     console.log(state);
-  }, [state.posts]);
+
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then((response) => response.json())
+    .then((json) => updateState({users: json, loading: false}));
+  }, []);
+
   return (
     <div>
       {state.loading ? <p>Loading...</p> :
