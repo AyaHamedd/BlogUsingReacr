@@ -1,68 +1,53 @@
-// 1.Blog. has many Post Cards
-// 2.PostCard.
-
 import { useEffect, useState } from "react";
 
-function PostCard({ post, authorName }) {
+function PostCard({ post, user }) {
   return (
     <div>
       <h2>{post.title}</h2>
-      <h3>{authorName}</h3>
+      <h2>By: {user.name}</h2>
       <p>{post.body}</p>
     </div>
   );
 }
 
-// function getUserName({ post, users }) {
-
-//   users.each(user => {
-//     if(post.userid === user.id){
-//       return user.name
-//     }
-//   })
-
-// }
-
-const getUserName = ({ post, users }) => (
-  users.each(user => {
-    if(post.userid === user.id){
-      return user.name
-    }
-  })
-);
-
 function Blog() {
-  const [state, updateState] = useState({
+  const [postState, updatePosts] = useState({
     loading: true,
     posts: [],
+  });
+
+  const [userState, updateUsers] = useState({
+    loading: true,
     users: [],
   });
+
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
-      .then((json) => updateState({ posts: json, loading: false }));
-    console.log(state);
+      .then((json) => updatePosts({ posts: json, loading: false }));
 
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((json) => updateState({ users: json, loading: false }));
+      .then((json) => updateUsers({ users: json, loading: false }));
   }, []);
 
-  return (
+  return postState.loading || userState.loading ? (
+    <p>Loading...</p>
+  ) : (
     <div>
-      {state.loading ? (
-        <p>Loading...</p>
-      ) : (
-        state.posts.map((post) => {
-          // state.users.filter((user) => user.id == post.userId);
-          // state.users.map((user) => {
-          //   if (user.id === post.userId) {
-          //     return post.assign(user);
-          //   }
-          // });
-          return <PostCard post={post} authorName={getUserName({ post, state.users })}></PostCard>;
-        })
-      )}
+      {postState.posts.map((post) => {
+        return (
+          <PostCard
+            post={post}
+            // user={userState.users[parseInt(post.userId--)]}
+            user={
+              userState.users.filter(
+                (user) => parseInt(user.id) === parseInt(post.userId)
+              )[0]
+            }
+          ></PostCard>
+        );
+      })}
     </div>
   );
 }
