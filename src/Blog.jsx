@@ -3,14 +3,33 @@
 
 import { useEffect, useState } from "react";
 
-function PostCard({ post }) {
+function PostCard({ post, authorName }) {
   return (
     <div>
       <h2>{post.title}</h2>
+      <h3>{authorName}</h3>
       <p>{post.body}</p>
     </div>
   );
 }
+
+// function getUserName({ post, users }) {
+
+//   users.each(user => {
+//     if(post.userid === user.id){
+//       return user.name
+//     }
+//   })
+
+// }
+
+const getUserName = ({ post, users }) => (
+  users.each(user => {
+    if(post.userid === user.id){
+      return user.name
+    }
+  })
+);
 
 function Blog() {
   const [state, updateState] = useState({
@@ -36,12 +55,12 @@ function Blog() {
       ) : (
         state.posts.map((post) => {
           // state.users.filter((user) => user.id == post.userId);
-          state.users.map((user) => {
-            if (user.id === post.userId) {
-              return post.assign(user);
-            }
-          });
-          return <PostCard post={post} user={state}></PostCard>;
+          // state.users.map((user) => {
+          //   if (user.id === post.userId) {
+          //     return post.assign(user);
+          //   }
+          // });
+          return <PostCard post={post} authorName={getUserName({ post, state.users })}></PostCard>;
         })
       )}
     </div>
