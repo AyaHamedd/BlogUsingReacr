@@ -19,3 +19,6 @@ code {
   color: aliceblue;
   margin-left: 200px;
 }
+#postBody {
+  padding-bottom: 20px;
+}

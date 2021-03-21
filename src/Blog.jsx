@@ -5,7 +5,7 @@ function PostCard({ post, user }) {
     <div id="card">
       <h2>{post.title}</h2>
       <h2>By: {user.name}</h2>
-      <p>{post.body}</p>
+      <p id="postBody">{post.body}</p>
     </div>
   );
 }
