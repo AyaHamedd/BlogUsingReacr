@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 function PostCard({ post, user }) {
   return (
-    <div>
+    <div id="card">
       <h2>{post.title}</h2>
       <h2>By: {user.name}</h2>
       <p>{post.body}</p>
